@@ -1,0 +1,32 @@
+Aplicar constraint unique na variável Name nas tabelas:
+--> Profile, Level, InformationArea
+
+Mudar borndate para birthdate
+
+Colocar nome das tabelas no singular
+
+Mudar o tipo da variável salarypara decimal (10,2)
+
+Implementar o comando de renomear tabela - procedure
+
+Mudar REFERENCES [Table](Variable) para REFERENCES [Table]
+
+Mudar o nome da variável Active para Bit
+
+Mudar o nome da variável RegisterDate para CreatedAt
+
+Mudar o nome de todas as Foreign Keys para:
+--> FK_NOME_DA_TABELA_ATUAL+NOME_DA_TABELA_DESTINO
+
+Na tabela Class:
+Mudar o tipo de variável datetime para time
+Mudar o noe da variável BeginningTime para StartTime
+
+Criar script para deletar todas as tabelas (Drop_Tables)
+
+Colocar CHECK dentro de CREATE TABLE
+Usar operador IN onde é usado CHECK
+
+Criar pull request para as alterações da script
+
+Ler sobre git flow
