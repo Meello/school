@@ -1,4 +1,4 @@
-CREATE TABLE [Profiles] 
+CREATE TABLE [Profile] 
 (
 	ProfileId tinyint not null,
 	Name varchar(20) not null,
