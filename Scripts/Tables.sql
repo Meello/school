@@ -12,7 +12,7 @@ CREATE TABLE [Level]
 	CONSTRAINT PK_Level PRIMARY KEY(LevelId)
 );
 
-CREATE TABLE [Teachers]
+CREATE TABLE [Teacher]
 (
 	TeacherId bigint not null,
 	Name varchar(20) not null,
