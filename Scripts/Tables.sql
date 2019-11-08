@@ -3,7 +3,7 @@ CREATE TABLE [Profile]
 	ProfileId tinyint not null,
 	Name varchar(20) not null,
 	CONSTRAINT PK_Profile PRIMARY KEY(ProfileId),
-	CONSTRAINT UC_ProfileName UNIQUE(Name)
+	CONSTRAINT UN_Profile_Name UNIQUE(Name)
 );
 
 CREATE TABLE [Level] 
@@ -11,7 +11,7 @@ CREATE TABLE [Level]
 	LevelId char(1) not null,
 	Name varchar(10) not null,
 	CONSTRAINT PK_Level PRIMARY KEY(LevelId),
-	CONSTRAINT UC_LevelName UNIQUE(Name)
+	CONSTRAINT UN_Level_Name UNIQUE(Name)
 );
 
 CREATE TABLE [Teacher]
@@ -23,9 +23,9 @@ CREATE TABLE [Teacher]
 	Salary decimal(10,2) not null,
 	AdmitionDate date not null,
 	CONSTRAINT PK_Teachers PRIMARY KEY(TeacherId),
-	CONSTRAINT FK_TeacherLevel FOREIGN KEY (LevelId)
+	CONSTRAINT FK_Teacher_Level FOREIGN KEY (LevelId)
 	REFERENCES [Level],
-	CONSTRAINT Check_GenderTeacher CHECK (Gender IN ('M','F'))
+	CONSTRAINT CK_Teacher_Gender CHECK (Gender IN ('M','F'))
 );
 
 CREATE TABLE [Student]
@@ -35,10 +35,16 @@ CREATE TABLE [Student]
 	Gender char(1) not null,
 	BirthDate date not null,
 	City varchar(20) not null,
-	CreatedAt datetime not null,
-	Active char(3) not null,
+	CreatedAt datetime2 not null,
+/*
+	DateTime
+	From January 1, 1753 to December 31, 9999 with an accuracy of 3.33 milliseconds
+	DateTime2
+	From January 1, 0001 to December 31, 9999 with an accuracy of 100 nanoseconds
+*/
+	Active bit not null,
 	CONSTRAINT PK_Student PRIMARY KEY(StudentId),
-	CONSTRAINT Check_GenderStudent CHECK (Gender IN('M','F'))
+	CONSTRAINT CK_Student_Gender CHECK (Gender IN('M','F'))
 );
 
 CREATE TABLE [TeacherProfile]
@@ -46,9 +52,9 @@ CREATE TABLE [TeacherProfile]
 	TeacherId bigint not null,
 	ProfileId tinyint not null,
 	CONSTRAINT PK_TeacherProfile PRIMARY KEY(TeacherId,ProfileId),
-	CONSTRAINT FK_TeacherProfileProfile FOREIGN KEY(ProfileId)
+	CONSTRAINT FK_TeacherProfile_Profile FOREIGN KEY(ProfileId)
 	REFERENCES [Profile],
-	CONSTRAINT FK_TeacherProfileTeacher FOREIGN KEY (TeacherId)
+	CONSTRAINT FK_TeacherProfile_Teacher FOREIGN KEY (TeacherId)
 	REFERENCES [Teacher]
 );
 
@@ -57,7 +63,7 @@ CREATE TABLE [InformationArea]
 	AreaId smallint not null,
 	Name varchar(20) not null,
 	CONSTRAINT PK_InformationArea PRIMARY KEY(AreaId),
-	CONSTRAINT UC_InformationAreaName UNIQUE(Name)
+	CONSTRAINT UN_InformationArea_Name UNIQUE(Name)
 );
 
 CREATE TABLE [Course]
@@ -67,7 +73,7 @@ CREATE TABLE [Course]
 	Name varchar(30) not null,
 	Workload smallint not null,
 	CONSTRAINT PK_Course PRIMARY KEY(CourseId),
-	CONSTRAINT FK_CourseArea FOREIGN KEY (AreaId)
+	CONSTRAINT FK_Course_InformationArea FOREIGN KEY (AreaId)
 	REFERENCES [InformationArea]
 );
 
@@ -83,12 +89,17 @@ CREATE TABLE [Class]
 	StartTime time not null,
 	EndTime time not null,
 	CONSTRAINT PK_Class PRIMARY KEY(ClassId),
-	CONSTRAINT FK_ClassTeacher FOREIGN KEY (TeacherId)
+	CONSTRAINT FK_Class_Teacher FOREIGN KEY (TeacherId)
 	REFERENCES [Teacher],
-	CONSTRAINT FK_ClassCourse FOREIGN KEY (CourseId)
+	CONSTRAINT FK_Class_Course FOREIGN KEY (CourseId)
 	REFERENCES [Course],
-	CONSTRAINT Check_Shift CHECK ([Shift] IN ('M','T','N'))
-
+	CONSTRAINT CK_Class_Shift CHECK ([Shift] IN ('M','T','N')),
+	CONSTRAINT CK_StartDate_EndDate CHECK (StartDate < EndDate),
+	CONSTRAINT CK_StartTime_EndTime CHECK (StartTime < EndTime)
+/*
+	Testar o check
+*/
+	
 );
 
 CREATE TABLE [Subscription]
@@ -96,8 +107,10 @@ CREATE TABLE [Subscription]
 	StudentId bigint not null,
 	ClassId tinyint not null,
 	CONSTRAINT PK_Sub PRIMARY KEY(StudentId,ClassId),
-	CONSTRAINT FK_SubscriptionStudent FOREIGN KEY(StudentId)
+	CONSTRAINT FK_Subscription_Student FOREIGN KEY(StudentId)
 	REFERENCES [Student],
-	CONSTRAINT FK_SubscriptionClass FOREIGN KEY (ClassId)
+	CONSTRAINT FK_Subscription_Class FOREIGN KEY (ClassId)
 	REFERENCES [Class]
 );
+
+SELECT * FROM [Student];
