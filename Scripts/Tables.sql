@@ -112,8 +112,10 @@ CREATE TABLE [Subscription]
 	CONSTRAINT FK_Subscription_Class FOREIGN KEY (ClassId)
 	REFERENCES [Class]
 );
-
 -- Ver a tabela 
 SELECT * FROM [Subscription];
 -- Deletar a tabela
 DROP TABLE [Class];
+-- Deletar a Foreign key
+ALTER TABLE [Class]
+DROP CONSTRAINT FK_Class_Course;
