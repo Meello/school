@@ -113,4 +113,7 @@ CREATE TABLE [Subscription]
 	REFERENCES [Class]
 );
 
-SELECT * FROM [Student];
+-- Ver a tabela 
+SELECT * FROM [Subscription];
+-- Deletar a tabela
+DROP TABLE [Class];
