@@ -41,8 +41,6 @@ BEGIN
 		SET @Description = 'The teacher ' + CAST(@TrackedEntityRecordId AS VARCHAR(MAX)) + ' was updated'
 		SET @ChangeDateUTC = GETUTCDATE()
 	END
-	--IF (EXISTS(SELECT 1 FROM INSERTED))
-	--BEGIN
 	IF (EXISTS(SELECT 1 FROM INSERTED) AND NOT EXISTS(SELECT 1 FROM DELETED))
 	BEGIN
 		SELECT @TrackedEntityRecordId = TeacherId
@@ -59,7 +57,6 @@ BEGIN
 		SET @Description = 'The teacher ' + CAST(@TrackedEntityRecordId AS VARCHAR(MAX)) + ' was deleted'
 		SET @ChangeDateUTC = GETUTCDATE()
 	END
-	--END
 	EXEC Procedure_ChangeHistory 
 		@ChangeOperationType,
 		@TrackedEntityId,
