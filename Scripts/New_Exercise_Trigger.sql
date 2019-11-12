@@ -28,28 +28,63 @@
 
 CREATE TABLE [TrackedEntity]
 (
-	Id_TrackedEntity tinyint not null identity(1,1),
+	TrackedEntityId tinyint not null identity(1,1),
 	Name char(10) not null,
-	CONSTRAINT PK_TrackedEntity PRIMARY KEY(Id_TrackedEntity)
+	CONSTRAINT PK_TrackedEntity PRIMARY KEY(TrackedEntityId)
 );
+INSERT INTO
+	[TrackedEntity]
+	(Name)
+VALUES
+('Course'),
+('Teacher'),
+('Student'),
+('Class');
+
 CREATE TABLE [ChangeHistory]
 (
-	Id_ChangeHistory UNIQUEIDENTIFIER DEFAULT NEWID(),
+	ChangeHistoryId UNIQUEIDENTIFIER DEFAULT NEWID(),
 	[User] nchar(50) DEFAULT SYSTEM_USER,
 	/*
 		Por que com DEFAULT funciona e sem, não?
 	*/
 	ChangeOperationType char not null,
-	Id_TrackedEntity tinyint not null,
-	Description varchar(300) not null,
-	ChangeDateUTC TIMESTAMP not null,
-	CONSTRAINT PK_ChangeHistory PRIMARY KEY(Id_ChangeHistory),
-	CONSTRAINT FK_ChangeHistory_TrackedEntity FOREIGN KEY(Id_TrackedEntity)
+	TrackedEntityId tinyint not null,
+	TrackedEntityRecordId bigint not null,
+	Description varchar(max) not null,
+	ChangeDateUTC datetime2 not null,
+	CONSTRAINT PK_ChangeHistory PRIMARY KEY(ChangeHistoryId),
+	CONSTRAINT FK_ChangeHistory_TrackedEntity FOREIGN KEY(TrackedEntityId)
 	REFERENCES [TrackedEntity]
 );
 
-INSERT INTO [ChangeHistory](teste)
-VALUES ('A'),('B');
+CREATE TABLE [ChangeHistoryDetail]
+(
+	ChangeHistoryDetailId tinyint not null identity(1,1),
+	ChangeHistoryId UNIQUEIDENTIFIER,
+	PropertyName char(100) not null,
+	PreviousValue varchar(MAX) not null,
+	NewValue varchar(MAX) not null,
+	CONSTRAINT FK_ChangeHistoryDetail_ChangeHistory FOREIGN KEY(ChangeHistoryId)
+	REFERENCES [ChangeHistory]
+);
 
-SELECT * FROM [ChangeHistory];
+INSERT INTO [Teacher]
+VALUES
+(13843917701,'Bruno','M','S',2500,'2000-01-29');
+
+UPDATE [Teacher]
+	SET Name = 'Bruno M'
+	WHERE TeacherId = 13843917701;
+
+DELETE [Teacher]
+WHERE [Teacher].Name = 'Bruno';
+
+SELECT * FROM [ChangeHistory]
+ORDER BY ChangeDateUTC DESC;
+
 DROP TABLE [ChangeHistory];
+-- Verificar triggers
+select * from sys.triggers; 
+DROP TRIGGER TriggerInsert_Teacher_ChangeHistory;
+

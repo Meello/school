@@ -113,7 +113,7 @@ CREATE TABLE [Subscription]
 	REFERENCES [Class]
 );
 -- Ver a tabela 
-SELECT * FROM [Subscription];
+SELECT * FROM [Teacher];
 -- Deletar a tabela
 DROP TABLE [Class];
 -- Deletar a Foreign key
