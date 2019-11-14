@@ -10,27 +10,17 @@
 	SELECT MAX(Price) AS BiggestPrice
 	FROM Products;
 */
+DECLARE @SALARY_MAX DECIMAL(10,2) = (SELECT MAX([Teacher].Salary) FROM [Teacher])
 SELECT
-	[Teacher].Name, [Teacher].Salary
+	*
 FROM 
 	[Teacher]
-	ORDER BY [Teacher].Salary DESC;
-
-SELECT
-	MAX([Teacher].Salary) AS Teacher_Biggest_Salary
-FROM [Teacher];
-
-/*
-	Como eu pego a linha inteira?
-*/
+	WHERE [Teacher].Salary = @SALARY_MAX
 
 --11b. LISTE O SALARIO E O NOME E O SALÁRIO DO PROFESSORES QUE GANHAM MENOS
+DECLARE @SALARY_MIN DECIMAL(10,2) = (SELECT MIN([Teacher].Salary) FROM [Teacher])
 SELECT
-	[Teacher].Name, [Teacher].Salary
+	*
 FROM 
 	[Teacher]
-	ORDER BY [Teacher].Salary ASC;
-
-SELECT
-	MIN([Teacher].Salary) AS Teacher_Smallest_Salary
-FROM [Teacher];
+	WHERE [Teacher].Salary = @SALARY_MIN

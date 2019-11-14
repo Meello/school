@@ -1,13 +1,7 @@
 --10. LISTE OS CAMPOS TurmaId, Unidade(CASO NÃO EXISTA, INFORMAR A MENSAGEM 'Não informado'), Nome do Curso, Nome do Professor, Perfil do Professor, Turno 
 SELECT
 	Class.ClassId,
-	CASE
-		WHEN Class.Local IS NULL THEN 'Não informado'
-		/*
-			IS NULL para informar se é NULL
-		*/
-		ELSE Class.Local
-	END AS [Local],
+	ISNULL(Class.Local,'Não informado') AS [Local],
 	Course.Name,
 	Class.Shift,
 	Teacher.Name AS 'Teacher',

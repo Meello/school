@@ -9,10 +9,10 @@
 SELECT 
 	Class.ClassId, 
 	Course.Name, 
-	CASE
-		WHEN Class.Shift = 'M' THEN 'Manhã' 
-		WHEN Class.Shift = 'T' THEN 'Tarde' 
-		WHEN Class.Shift = 'N' THEN 'Noite' 
+	CASE Class.Shift 
+		WHEN 'M' THEN 'Manhã' 
+		WHEN 'T' THEN 'Tarde' 
+		WHEN 'N' THEN 'Noite' 
 	END AS [Shift]
 	-- as 'NOME' altera nome da coluna
 FROM 

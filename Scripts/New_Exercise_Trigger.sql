@@ -28,31 +28,35 @@
 
 CREATE TABLE [TrackedEntity]
 (
-	TrackedEntityId tinyint not null identity(1,1),
+	TrackedEntityId tinyint not null,
 	Name char(10) not null,
 	CONSTRAINT PK_TrackedEntity PRIMARY KEY(TrackedEntityId)
 );
 INSERT INTO
 	[TrackedEntity]
-	(Name)
+	(
+		TrackedEntityId,
+		Name
+	)
 VALUES
-('Course'),
-('Teacher'),
-('Student'),
-('Class');
+(1,'Course'),
+(2,'Teacher'),
+(3,'Student'),
+(4,'Class');
 
 CREATE TABLE [ChangeHistory]
 (
-	ChangeHistoryId UNIQUEIDENTIFIER DEFAULT NEWID(),
+	ChangeHistoryId UNIQUEIDENTIFIER NEWID(),
 	[User] nchar(50) DEFAULT SYSTEM_USER,
 	/*
 		Por que com DEFAULT funciona e sem, não?
 	*/
-	ChangeOperationType char not null,
+	ChangeOperationType char(1) not null,
 	TrackedEntityId tinyint not null,
 	TrackedEntityRecordId bigint not null,
 	Description varchar(max) not null,
 	ChangeDateUTC datetime2 not null,
+	CONSTRAINT CK_ChangeHistory_ChangeOperationType CHECK(ChangeOperationType IN ('I','U','D')),
 	CONSTRAINT PK_ChangeHistory PRIMARY KEY(ChangeHistoryId),
 	CONSTRAINT FK_ChangeHistory_TrackedEntity FOREIGN KEY(TrackedEntityId)
 	REFERENCES [TrackedEntity]

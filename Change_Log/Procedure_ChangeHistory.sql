@@ -1,7 +1,6 @@
 USE school;  
 GO  
-IF OBJECT_ID('Procedure_ChangeHistory', 'P') IS NOT NULL  
-    DROP PROCEDURE Procedure_ChangeHistory;  
+DROP PROCEDURE IF EXISTS Procedure_ChangeHistory
 GO  
 CREATE PROCEDURE Procedure_ChangeHistory  
 @ChangeOperationType char, 
@@ -11,7 +10,8 @@ CREATE PROCEDURE Procedure_ChangeHistory
 @ChangeDateUTC datetime2,
 @ChangeHistoryId varchar(max) OUTPUT  
 AS    
-    SET NOCOUNT ON;  
+    SET NOCOUNT ON; 
+	SET @ChangeHistoryId = NEWID()
 	IF	
 	@ChangeOperationType IS NOT NULL
 	AND @TrackedEntityId IS NOT NULL
@@ -20,6 +20,7 @@ AS
 	BEGIN
 		INSERT 	INTO [ChangeHistory]
 		(
+			ChangeHistoryId,
 			ChangeOperationType,
 			TrackedEntityId,
 			TrackedEntityRecordId,
@@ -27,14 +28,12 @@ AS
 			ChangeDateUTC
 		)
 		SELECT
+			@ChangeHistoryId,
 			@ChangeOperationType,
 			@TrackedEntityId,
 			@TrackedEntityRecordId,
 			@Description,
 			@ChangeDateUTC
 	END	
-	SELECT @ChangeHistoryId = ChangeHistoryId  
-    FROM [ChangeHistory]
-    WHERE ChangeDateUTC = @ChangeDateUTC
 RETURN  
 GO  
